@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q Batatas | Batatas Recheadas</title>
+<meta name="description" content="Q Batatas — batatas recheadas e adicionais. Faça seu pedido pelo WhatsApp.">
+<style>
+:root{--wine:#761522;--wine-dark:#4f0d17;--wine-2:#982536;--cream:#fff8e9;--paper:#fffdf7;--gold:#d7a84b;--ink:#241c18;--muted:#776d65;--line:#eadfcd;--green:#20b957}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fffaf0;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{height:44px;background:var(--wine-dark);color:#fff;display:flex;align-items:center;justify-content:center;padding:0 14px;font-size:14px}
+header{background:linear-gradient(145deg,#74121f,#a32b3b);color:#fff;text-align:center;padding:20px 16px 30px;min-height:232px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;left:-4%;right:-4%;bottom:-55px;height:115px;background:rgba(255,255,255,.07);transform:rotate(-4deg)}
+.brand{position:relative;z-index:1}.brand-mark{width:82px;height:82px;border:3px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:auto;background:#5c101a;color:var(--gold);font:bold 46px Georgia,serif}
+h1{margin:8px 0 2px;font:bold 38px Georgia,serif}.subtitle{margin:0;color:#ffe6ae;font-size:18px}
+.page{display:grid;grid-template-columns:minmax(0,1fr) 410px;max-width:1400px;margin:0 auto;min-height:calc(100vh - 44px)}
+.catalog{padding:26px 30px 70px;background:linear-gradient(180deg,#fffaf0,#fbf0dc)}
+.cart-column{position:relative;background:#fff;border-left:1px solid var(--line)}
+.checkout{position:sticky;top:0;height:calc(100vh - 44px);padding:22px 20px;background:#fff;overflow-y:auto}
+.checkout-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:14px}
+.checkout h2{margin:0;color:var(--wine);font:bold 24px Georgia,serif}
+.cart-close{display:none;border:0;background:transparent;color:var(--wine);font-size:25px}
+.cart-count-pill{background:#f3c44f;color:var(--wine-dark);font-size:13px;font-weight:900;border-radius:999px;padding:8px 11px}
+.section-title{display:flex;align-items:center;gap:12px;margin:22px 0 14px;color:var(--wine);font:bold 28px Georgia,serif}
+.section-title:after{content:"";height:1px;background:var(--gold);flex:1}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.grid.premium{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 7px 20px rgba(80,45,25,.08);display:flex;flex-direction:column}
+.photo{width:100%;aspect-ratio:4/3;object-fit:cover;background:#ead9b8;display:block}
+.photo.placeholder{display:grid;place-items:center;background:linear-gradient(135deg,#ead9b8,#fff5df);color:#8f7d68;font-weight:700}
+.photo.placeholder img{width:100%;height:100%;object-fit:cover}
+.content{padding:14px}.name-row{display:flex;justify-content:space-between;gap:10px}.name{font:bold 19px Georgia,serif;color:var(--wine)}.price{font-weight:900;color:var(--wine);white-space:nowrap}
+.desc{color:var(--muted);font-size:13px;line-height:1.4;margin:7px 0 12px}.qty{display:flex;gap:8px;align-items:center}
+.counter{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}.counter button{width:32px;height:38px;border:0;background:#fff4dc;color:var(--wine);font-size:19px}.counter span{width:31px;display:grid;place-items:center;font-weight:900}
+.add{flex:1;border:0;border-radius:10px;background:var(--wine);color:#fff;padding:10px;font-weight:900}.add:hover{background:var(--wine-dark)}
+.monte,.addons{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 7px 20px rgba(80,45,25,.08)}
+.choice-grid,.addon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.choice,.addon{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--cream);border:1px solid var(--line);border-radius:11px;padding:10px}
+.choice{justify-content:flex-start}.choice input{accent-color:var(--wine)}
+.addon-info{display:flex;flex-direction:column;gap:2px}.addon-name{font-weight:700;font-size:13px}.addon-price{font-size:12px;color:var(--muted)}
+.addon-plus{width:34px;height:34px;border:0;border-radius:9px;background:var(--wine);color:#fff;font-size:21px;font-weight:900}.small-note{margin-top:10px;color:var(--muted);font-size:12px}
+.monte-actions{display:flex;justify-content:center;margin-top:13px}.monte-actions .add{max-width:410px}
+.cart-items{margin-top:10px}.cart-empty{color:var(--muted);padding:25px 0}
+.cart-product{padding:12px 0;border-bottom:1px solid var(--line)}
+.cart-product-top{display:flex;gap:10px;align-items:flex-start}.cart-product-name{font-weight:900;line-height:1.25}.cart-product-price{margin-left:auto;font-weight:900;color:var(--wine);white-space:nowrap}
+.cart-controls{display:flex;gap:6px;align-items:center;margin-top:8px}.cart-controls button{min-width:29px;height:29px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--wine);font-weight:900}.cart-delete{margin-left:auto;border:0!important;background:transparent!important;font-size:17px}
+.item-addons-box{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fffdf8}
+.item-addons-head{display:flex;justify-content:space-between;align-items:center;color:var(--ink);font-weight:700;font-size:13px}
+.item-addons-head button{border:0;background:transparent;color:var(--wine);font-size:18px}
+.item-addons-list{margin-top:7px}.item-addon{display:flex;align-items:center;justify-content:space-between;padding:4px 0;color:#8c1d2c;font-size:12px}.item-addon button{border:0;background:transparent;color:var(--wine);font-weight:900}
+.addon-picker{display:none;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px;grid-template-columns:1fr 1fr;gap:6px}.addon-picker.active{display:grid}
+.pick-addon{border:1px solid var(--line);border-radius:8px;background:#fff;padding:7px;text-align:left;font-size:11px;color:var(--ink)}
+.pick-addon strong{display:block;color:var(--wine)}
+.cart-total{display:flex;justify-content:space-between;padding:14px 0;font-size:21px;font-weight:900;color:var(--wine)}
+.form{display:grid;gap:9px}.form label{font-size:12px;font-weight:800;color:var(--wine)}.form input,.form textarea{width:100%;padding:11px;border:1px solid #d9cbb9;border-radius:9px;background:#fff;color:var(--ink)}.form textarea{min-height:72px;resize:vertical}
+.whatsapp{width:100%;border:0;border-radius:11px;background:var(--green);color:#063b18;padding:13px;font-weight:900;font-size:15px;margin-top:10px}
+.help{margin-top:13px;padding:12px;border:1px solid #f0dfba;border-radius:12px;background:#fff9ed;font-size:12px;line-height:1.45;color:#725b3e}.help strong{display:block;color:var(--wine);margin-bottom:5px}
+.cart-button-mobile{display:none}
+
+@media(max-width:1100px){.page{grid-template-columns:minmax(0,1fr) 360px}.catalog{padding:24px 18px}.grid{grid-template-columns:repeat(2,1fr)}.choice-grid,.addon-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){
+  .page{display:block}.catalog{padding:20px 12px 80px}.cart-column{position:static}.checkout{position:fixed;top:0;right:0;width:min(410px,94vw);height:100dvh;z-index:1300;box-shadow:-12px 0 35px rgba(0,0,0,.25);transform:translateX(105%);transition:transform .25s ease}.checkout.active{transform:translateX(0)}.cart-close{display:block}.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:1250}.cart-overlay.active{display:block}.cart-button-mobile{display:block;position:fixed;top:54px;right:12px;z-index:1200;border:0;border-radius:999px;background:var(--gold);color:var(--wine-dark);padding:11px 15px;font-weight:900;box-shadow:0 6px 18px rgba(0,0,0,.22)}}
+@media(max-width:560px){.topbar{font-size:12px}.grid,.grid.premium{grid-template-columns:1fr}.choice-grid,.addon-grid{grid-template-columns:1fr 1fr}.section-title{font-size:24px}.brand-mark{width:72px;height:72px;font-size:40px}h1{font-size:31px}header{min-height:225px}.addon-picker{grid-template-columns:1fr}}
+@media(max-width:390px){.choice-grid,.addon-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">🍟 Batatas recheadas • Peça direto pelo WhatsApp</div>
+
+<button class="cart-button-mobile" onclick="toggleCart(true)">🛒 Carrinho <span id="mobile-count">0</span></button>
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart(false)"></div>
+<header>
+  <div class="brand">
+    <div class="brand-mark">Q</div>
+    <h1>Q BATATAS</h1>
+    <p class="subtitle">Batatas Recheadas</p>
+  </div>
+</header>
+
+<div class="page">
+<div class="catalog">
+<main>
+  <div class="section-title">Batatas Tradicionais <span>R$ 24,99</span></div>
+  <section class="grid">
+
+    <article class="card">
+      <div class="photo placeholder">
+        <img src="italiana.jpeg" alt="Batata Italiana">
+      </div>
+      <div class="content">
+        <div class="name-row">
+          <div class="name">Batata Italiana (Pizza)</div><div class="price">R$ 24,99</div>
+        </div>
+        <p class="desc">Catupiry, Queijo mussarela, Presunto, Orégano e Tomate.</p>
+        <div class="qty">
+          <div class="counter">
+            <button onclick="changeQty('italiana',-1)">−</button><span id="q-italiana">1</span><button onclick="changeQty('italiana',1)">+</button>
+          </div>
+          <button class="add" onclick="addItem('italiana')">Adicionar</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="photo placeholder"><img src="Caipira gourmet.jpeg" alt="Batata Caipira Cremosa"></div>
+      <div class="content">
+        <div class="name-row">
+          <div class="name">Caipira Cremosa</div><div class="price">R$ 24,99</div>
+        </div>
+        <p class="desc">Frango desfiado cremoso, Catupiry, Queijo mussarela e Milho.</p>
+        <div class="qty">
+          <div class="counter">
+            <button onclick="changeQty('caipira',-1)">−</button><span id="q-caipira">0</span><button onclick="changeQty('caipira',1)">+</button>
+          </div>
+          <button class="add" onclick="addItem('caipira')">Adicionar</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="photo placeholder"><img src="Calabacon com catupiry.jpeg" alt="Dupla Dinâmica"></div>
+      <div class="content">
+        <div class="name-row">
+          <div class="name">Dupla Dinâmica (Cala Bacon)</div><div class="price">R$ 24,99</div>
+        </div>
+        <p class="desc">Calabresa, Bacon, Catupiry ou Cheddar, Queijo mussarela.</p>
+        <div class="qty">
+          <div class="counter">
+            <button onclick="changeQty('dupla',-1)">−</button><span id="q-dupla">0</span><button onclick="changeQty('dupla',1)">+</button>
+          </div>
+          <button class="add" onclick="addItem('dupla')">Adicionar</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <div class="section-title">Linha Premium <span>R$ 26,99</span></div>
+  <section class="grid premium">
+    <article class="card">
+      <div class="photo placeholder"><img src="Turbinada do chefe.jpeg" alt="Turbinada do Chefe"></div>
+      <div class="content">
+        <div class="name-row">
+          <div class="name">Turbinada do Chefe</div><div class="price">R$ 26,99</div>
+        </div>
+        <p class="desc">Costela desfiada, Cream cheese, Queijo mussarela, Cheiro-verde e Pimenta biquinho.</p>
+        <div class="qty">
+          <div class="counter">
+            <button onclick="changeQty('turbinada',-1)">−</button><span id="q-turbinada">0</span><button onclick="changeQty('turbinada',1)">+</button>
+          </div>
+          <button class="add" onclick="addItem('turbinada')">Adicionar</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="photo placeholder"><img src="Strogonoff.jpeg" alt="Strogonoff da Casa"></div>
+      <div class="content">
+        <div class="name-row">
+          <div class="name">Strogonoff da Casa</div><div class="price">R$ 26,99</div>
+        </div>
+        <p class="desc">Strogonoff de frango, Catupiry, Queijo mussarela e cheiro-verde.</p>
+        <div class="qty">
+          <div class="counter">
+            <button onclick="changeQty('strogonoff',-1)">−</button><span id="q-strogonoff">0</span><button onclick="changeQty('strogonoff',1)">+</button>
+          </div>
+          <button class="add" onclick="addItem('strogonoff')">Adicionar</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Monte a sua fica aqui, antes dos adicionais -->
+  <div class="section-title">Monte a sua <span>R$ 28,99</span></div>
+  <section class="monte">
+    <div class="name-row">
+      <div class="name">Monte a sua</div><div class="price">R$ 28,99</div>
+    </div>
+    <p class="desc">Escolha exatamente 4 recheios do seu jeito.</p>
+    <div class="choice-grid">
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Calabresa">Calabresa</label>
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Catupiry">Catupiry</label>
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Cheddar">Cheddar</label>
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Queijo mussarela">Queijo mussarela</label>
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Presunto">Presunto</label>
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Frango desfiado">Frango desfiado</label>
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Bacon">Bacon</label>
+      <label class="choice"><input type="checkbox" class="monte-choice" value="Milho">Milho</label>
+    </div>
+    <div class="monte-actions">
+      <button class="add" onclick="addMonteSua()">🛒 Adicionar ao carrinho</button>
+    </div>
+  </section>
+
+  <div class="section-title">Adicionais 01 <span>R$ 4,99 cada</span></div>
+  <section class="addons">
+    <div class="addon-grid">
+      <div class="addon"><div class="addon-info"><span class="addon-name">Calabresa</span><span class="addon-price">R$ 4,99</span></div><button class="addon-plus" onclick="addAddon('Calabresa',4.99)">+</button></div>
+      <div class="addon"><div class="addon-info"><span class="addon-name">Catupiry</span><span class="addon-price">R$ 4,99</span></div><button class="addon-plus" onclick="addAddon('Catupiry',4.99)">+</button></div>
+      <div class="addon"><div class="addon-info"><span class="addon-name">Cheddar</span><span class="addon-price">R$ 4,99</span></div><button class="addon-plus" onclick="addAddon('Cheddar',4.99)">+</button></div>
+      <div class="addon"><div class="addon-info"><span class="addon-name">Queijo mussarela</span><span class="addon-price">R$ 4,99</span></div><button class="addon-plus" onclick="addAddon('Queijo mussarela',4.99)">+</button></div>
+      <div class="addon"><div class="addon-info"><span class="addon-name">Presunto</span><span class="addon-price">R$ 4,99</span></div><button class="addon-plus" onclick="addAddon('Presunto',4.99)">+</button></div>
+    </div>
+    <div class="small-note">Toque no + para colocar o adicional no último produto do carrinho.</div>
+  </section>
+
+  <div class="section-title">Adicionais 02 <span>R$ 9,99 cada</span></div>
+  <section class="addons">
+    <div class="addon-grid">
+      <div class="addon"><div class="addon-info"><span class="addon-name">Frango desfiado</span><span class="addon-price">R$ 9,99</span></div><button class="addon-plus" onclick="addAddon('Frango desfiado',9.99)">+</button></div>
+      <div class="addon"><div class="addon-info"><span class="addon-name">Bacon</span><span class="addon-price">R$ 9,99</span></div><button class="addon-plus" onclick="addAddon('Bacon',9.99)">+</button></div>
+      <div class="addon"><div class="addon-info"><span class="addon-name">Costela desfiada</span><span class="addon-price">R$ 9,99</span></div><button class="addon-plus" onclick="addAddon('Costela desfiada',9.99)">+</button></div>
+      <div class="addon"><div class="addon-info"><span class="addon-name">Frango em cubos</span><span class="addon-price">R$ 9,99</span></div><button class="addon-plus" onclick="addAddon('Frango em cubos',9.99)">+</button></div>
+    </div>
+    <div class="small-note">Toque no + para colocar o adicional no último produto do carrinho.</div>
+  </section>
+</main>
+</div>
+<div class="cart-column">
+<section class="checkout" id="pedido" aria-label="Carrinho">
+  <div class="checkout-top">
+    <h2>Seu pedido</h2><span class="cart-count-pill" id="cart-count-pill">0 itens</span>
+    <button class="cart-close" onclick="toggleCart(false)">Fechar ✕</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-total"><span>Total</span><span id="total">R$ 0,00</span></div>
+  <div class="form">
+    <div>
+      <label for="nome">Seu nome</label>
+      <input id="nome" type="text" placeholder="Digite seu nome" autocomplete="name">
+    </div>
+    <div>
+      <label for="endereco">Endereço / retirada</label>
+      <input id="endereco" type="text" placeholder="Digite seu endereço ou local de retirada" autocomplete="street-address">
+    </div>
+    <div>
+      <label for="obs">Observações do pedido</label>
+      <textarea id="obs" placeholder="Ex.: ponto de referência, instruções especiais"></textarea>
+    </div>
+  </div>
+  <button class="whatsapp" onclick="sendWhatsApp()">🟢 Enviar pedido pelo WhatsApp</button><div class="help"><strong>Como funciona?</strong>• Adicione as batatas que desejar.<br>• No carrinho, clique em “Aplicar adicionais neste item” para escolher em qual batata cada adicional será colocado.<br>• Os adicionais ficam somente no item selecionado.</div>
+</section>
+</div>
+</div>
+
+<script>
+const WHATSAPP="5517976047541";
+const products={
+  italiana:{name:"Batata Italiana (Pizza)",price:24.99},
+  caipira:{name:"Batata Caipira Cremosa",price:24.99},
+  dupla:{name:"Dupla Dinâmica",price:24.99},
+  turbinada:{name:"Turbinada do Chefe",price:26.99},
+  strogonoff:{name:"Strogonoff da Casa",price:26.99},
+  monte:{name:"Monte a sua",price:28.99}
+};
+const qty={italiana:1,caipira:0,dupla:0,turbinada:0,strogonoff:0};
+const cart=[];
+const addonCatalog=[
+  {name:"Calabresa",price:4.99,group:"01"},{name:"Catupiry",price:4.99,group:"01"},
+  {name:"Cheddar",price:4.99,group:"01"},{name:"Queijo mussarela",price:4.99,group:"01"},
+  {name:"Presunto",price:4.99,group:"01"},
+  {name:"Frango desfiado",price:9.99,group:"02"},{name:"Bacon",price:9.99,group:"02"},
+  {name:"Costela desfiada",price:9.99,group:"02"},{name:"Frango em cubos",price:9.99,group:"02"}
+];
+
+function money(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function toggleCart(open){
+  document.getElementById("pedido").classList.toggle("active",open);
+  document.getElementById("cart-overlay").classList.toggle("active",open);
+  document.body.style.overflow=open?"hidden":"";
+}
+function changeQty(id,delta){
+  qty[id]=Math.max(0,(qty[id]||0)+delta);
+  const el=document.getElementById("q-"+id); if(el) el.textContent=qty[id];
+}
+function addItem(id){
+  const amount=qty[id]||0;
+  if(amount<1){alert("Escolha pelo menos 1 unidade.");return}
+  cart.push({id,name:products[id].name,price:products[id].price,qty:amount,addons:[]});
+  qty[id]=0; const el=document.getElementById("q-"+id); if(el) el.textContent="0";
+  renderCart(); toggleCart(true);
+}
+function addMonteSua(){
+  const choices=[...document.querySelectorAll(".monte-choice:checked")].map(x=>x.value);
+  if(choices.length!==4){alert("Escolha exatamente 4 recheios para montar sua batata.");return}
+  cart.push({id:"monte",name:"Monte a sua",price:28.99,qty:1,addons:choices.map(name=>({name,price:0}))});
+  document.querySelectorAll(".monte-choice").forEach(x=>x.checked=false);
+  renderCart(); toggleCart(true);
+}
+function addAddon(name,price){
+  if(!cart.length){alert("Primeiro adicione uma batata ao carrinho.");return}
+  cart[cart.length-1].addons.push({name,price});
+  renderCart(); toggleCart(true);
+}
+function togglePicker(index){
+  const el=document.getElementById("picker-"+index);
+  el.classList.toggle("active");
+}
+function applyAddon(index,name,price){
+  if(!cart[index])return;
+  cart[index].addons.push({name,price});
+  renderCart();
+  setTimeout(()=>{const el=document.getElementById("picker-"+index);if(el)el.classList.add("active")},0);
+}
+function removeAddon(itemIndex,addonIndex){
+  if(cart[itemIndex])cart[itemIndex].addons.splice(addonIndex,1);
+  renderCart();
+}
+function changeCartQty(index,delta){
+  if(!cart[index])return;
+  cart[index].qty+=delta;
+  if(cart[index].qty<=0)cart.splice(index,1);
+  renderCart();
+}
+function removeCartItem(index){cart.splice(index,1);renderCart()}
+function itemTotal(item){return (item.price+item.addons.reduce((s,a)=>s+a.price,0))*item.qty}
+function cartTotal(){return cart.reduce((s,item)=>s+itemTotal(item),0)}
+
+function pickerHTML(index){
+  return addonCatalog.map(a=>`<button class="pick-addon" onclick="applyAddon(${index},'${a.name.replace(/'/g,"\\'")}',${a.price})"><strong>${a.name}</strong>${money(a.price)}</button>`).join("");
+}
+function renderCart(){
+  const count=cart.reduce((s,item)=>s+item.qty,0);
+  document.getElementById("cart-count-pill").textContent=count+" "+(count===1?"item":"itens");
+  document.getElementById("mobile-count").textContent=count;
+  const wrap=document.getElementById("cart-items");
+  if(!cart.length){wrap.innerHTML='<div class="cart-empty">Seu carrinho está vazio.</div>'}
+  else{
+    wrap.innerHTML=cart.map((item,i)=>`
+      <div class="cart-product">
+        <div class="cart-product-top">
+          <div>
+            <div class="cart-product-name">${item.qty}x ${item.name}</div>
+            <div class="cart-controls">
+              <button onclick="changeCartQty(${i},-1)">−</button><span>${item.qty}</span><button onclick="changeCartQty(${i},1)">+</button>
+              <button class="cart-delete" onclick="removeCartItem(${i})" title="Remover">🗑️</button>
+            </div>
+          </div>
+          <div class="cart-product-price">${money(itemTotal(item))}</div>
+        </div>
+        <div class="item-addons-box">
+          <div class="item-addons-head">
+            <span>Aplicar adicionais neste item</span>
+            <button onclick="togglePicker(${i})">⌄</button>
+          </div>
+          <div class="item-addons-list">
+            ${item.addons.length?item.addons.map((a,j)=>`<div class="item-addon"><span>${a.name}${a.price?` — ${money(a.price)}`:""}</span><button onclick="removeAddon(${i},${j})">×</button></div>`).join(""):'<div class="item-addon"><span>Nenhum adicional</span></div>'}
+          </div>
+          <div class="addon-picker" id="picker-${i}">${pickerHTML(i)}</div>
+        </div>
+      </div>`).join("");
+  }
+  document.getElementById("total").textContent=money(cartTotal());
+}
+function sendWhatsApp(){
+  if(!cart.length){alert("Adicione pelo menos um produto ao carrinho.");return}
+  const nome=document.getElementById("nome").value.trim();
+  const endereco=document.getElementById("endereco").value.trim();
+  const obs=document.getElementById("obs").value.trim();
+  let msg="*Q BATATAS — NOVO PEDIDO*%0A%0A";
+  cart.forEach(item=>{
+    msg+=`${item.qty}x ${item.name} — ${money(item.price*item.qty)}%0A`;
+    item.addons.forEach(a=>msg+=`  + ${a.name}${a.price?` — ${money(a.price)}`:""}%0A`);
+  });
+  msg+=`%0A*Total: ${money(cartTotal())}*`;
+  if(nome)msg+=`%0A*Nome:* ${encodeURIComponent(nome)}`;
+  if(endereco)msg+=`%0A*Endereço / retirada:* ${encodeURIComponent(endereco)}`;
+  if(obs)msg+=`%0A*Observações:* ${encodeURIComponent(obs)}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${msg}`,"_blank");
+}
+renderCart();
+</script>
+</body>
+</html>
