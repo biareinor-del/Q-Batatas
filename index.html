@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q Batatas | Batatas Recheadas</title>
+  <meta name="description" content="Q Batatas — batatas recheadas e adicionais. Faça seu pedido pelo WhatsApp.">
+  <style>
+    :root{
+      --wine:#761522;
+      --wine-dark:#4f0d17;
+      --cream:#fff8e9;
+      --paper:#fffdf7;
+      --gold:#d7a84b;
+      --ink:#241c18;
+      --muted:#776d65;
+      --line:#eadfcd;
+      --shadow:0 10px 28px rgba(80,45,25,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(215,168,75,.10), transparent 25%),
+        linear-gradient(180deg,#fffaf0 0%,#f8edda 100%);
+    }
+    button,input,textarea{font:inherit}
+    .topbar{
+      background:var(--wine-dark);color:#fff;padding:9px 16px;text-align:center;
+      font-size:13px;letter-spacing:.2px
+    }
+    header{
+      background:linear-gradient(135deg,var(--wine),#982536);
+      color:#fff; padding:28px 18px 34px; text-align:center;
+      position:relative; overflow:hidden;
+    }
+    header:after{
+      content:"";position:absolute;inset:auto -30px -55px;height:120px;
+      background:rgba(255,255,255,.07);transform:rotate(-4deg)
+    }
+    .brand{position:relative;z-index:1}
+    .brand-mark{
+      width:78px;height:78px;margin:auto;border:3px solid var(--gold);
+      border-radius:50%;display:grid;place-items:center;font-size:42px;
+      font-weight:900;color:var(--gold);background:#5d111c;
+      box-shadow:0 5px 18px rgba(0,0,0,.18)
+    }
+    h1{margin:10px 0 3px;font-family:Georgia,serif;font-size:34px}
+    .subtitle{margin:0;color:#ffe9b7;font-size:15px}
+    main{max-width:1050px;margin:auto;padding:24px 15px 120px}
+    .section-title{
+      display:flex;align-items:center;gap:10px;margin:25px 0 15px;
+      font-family:Georgia,serif;font-size:25px;color:var(--wine)
+    }
+    .section-title:after{content:"";height:1px;background:var(--gold);flex:1}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+    .card{
+      background:rgba(255,253,247,.94);border:1px solid var(--line);
+      border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
+      display:flex;flex-direction:column
+    }
+    .photo{
+      width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee2cc;
+      display:block
+    }
+    .photo.placeholder{
+      display:grid;place-items:center;color:#8f7d68;text-align:center;padding:20px;
+      font-weight:700;background:linear-gradient(135deg,#ead9b8,#fff5df)
+    }
+    .content{padding:16px}
+    .name-row{display:flex;justify-content:space-between;gap:12px;align-items:start}
+    .name{font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--wine)}
+    .price{font-weight:900;white-space:nowrap;color:var(--wine);font-size:18px}
+    .desc{color:var(--muted);font-size:14px;line-height:1.45;margin:8px 0 14px}
+    .qty{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .counter{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .counter button{width:38px;height:38px;border:0;background:#fff4dc;color:var(--wine);font-size:22px;cursor:pointer}
+    .counter span{min-width:35px;text-align:center;font-weight:800}
+    .add{
+      flex:1;border:0;border-radius:12px;background:var(--wine);color:#fff;
+      padding:11px 13px;font-weight:800;cursor:pointer
+    }
+    .add:hover{background:var(--wine-dark)}
+    .addons{
+      background:#fffdf7;border:1px solid var(--line);border-radius:18px;padding:16px;
+      box-shadow:var(--shadow)
+    }
+    .addon-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .addon{
+      display:flex;align-items:center;gap:8px;background:#fff8e9;border:1px solid var(--line);
+      border-radius:12px;padding:10px;cursor:pointer;font-size:14px
+    }
+    .addon input{accent-color:var(--wine)}
+    .checkout{
+      margin-top:25px;background:var(--wine);color:#fff;border-radius:20px;padding:18px;
+      box-shadow:0 15px 35px rgba(118,21,34,.22);position:sticky;bottom:12px;z-index:5
+    }
+    .checkout-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .checkout h2{margin:0;font-size:18px}
+    .total{font-size:22px;font-weight:900}
+    .cart-items{margin:10px 0 14px;max-height:160px;overflow:auto;font-size:14px}
+    .cart-line{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.15)}
+    .form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .form input,.form textarea{
+      width:100%;border:0;border-radius:10px;padding:11px;background:#fff;color:var(--ink)
+    }
+    .form textarea{grid-column:1/-1;min-height:65px;resize:vertical}
+    .whatsapp{
+      width:100%;border:0;border-radius:12px;padding:13px;margin-top:10px;
+      background:#25d366;color:#062b13;font-weight:900;cursor:pointer;font-size:16px
+    }
+    footer{text-align:center;padding:30px 15px 40px;color:var(--muted);font-size:13px}
+    .small-note{font-size:12px;color:#8b7c6b;margin-top:8px}
+    @media(max-width:700px){
+      .grid{grid-template-columns:1fr}
+      .addon-list{grid-template-columns:1fr 1fr}
+      .form{grid-template-columns:1fr}
+      .form textarea{grid-column:auto}
+      h1{font-size:29px}
+    }
+    @media(max-width:430px){
+      .addon-list{grid-template-columns:1fr}
+      .checkout{border-radius:16px}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">🍟 Batatas recheadas • Peça direto pelo WhatsApp</div>
+
+  <header>
+    <div class="brand">
+      <div class="brand-mark">Q</div>
+      <h1>Q BATATAS</h1>
+      <p class="subtitle">Batatas Recheadas</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-title">Batatas Tradicionais <span>R$ 24,99</span></div>
+    <section class="grid">
+      <article class="card">
+        <div class="photo placeholder">COLOQUE A FOTO<br>da Batata Italiana</div>
+        <div class="content">
+          <div class="name-row"><div class="name">A Italiana (Pizza)</div><div class="price">R$ 24,99</div></div>
+          <p class="desc">Catupiry, queijo, presunto, orégano e tomate.</p>
+          <div class="qty"><div class="counter"><button onclick="changeQty('italiana',-1)">−</button><span id="q-italiana">1</span><button onclick="changeQty('italiana',1)">+</button></div><button class="add" onclick="addItem('italiana')">Adicionar</button></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="photo placeholder">COLOQUE A FOTO<br>da Caipira Gourmet</div>
+        <div class="content">
+          <div class="name-row"><div class="name">A Caipira Gourmet</div><div class="price">R$ 24,99</div></div>
+          <p class="desc">Frango desfiado cremoso, catupiry, queijo e milho.</p>
+          <div class="qty"><div class="counter"><button onclick="changeQty('caipira',-1)">−</button><span id="q-caipira">1</span><button onclick="changeQty('caipira',1)">+</button></div><button class="add" onclick="addItem('caipira')">Adicionar</button></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="photo placeholder">COLOQUE A FOTO<br>da Dupla Dinâmica</div>
+        <div class="content">
+          <div class="name-row"><div class="name">Dupla Dinâmica (Cala Bacon)</div><div class="price">R$ 24,99</div></div>
+          <p class="desc">Calabresa, bacon, catupiry ou cheddar e queijo.</p>
+          <div class="qty"><div class="counter"><button onclick="changeQty('dupla',-1)">−</button><span id="q-dupla">1</span><button onclick="changeQty('dupla',1)">+</button></div><button class="add" onclick="addItem('dupla')">Adicionar</button></div>
+        </div>
+      </article>
+    </section>
+
+    <div class="section-title">Linha Premium <span>R$ 26,99</span></div>
+    <section class="grid">
+      <article class="card">
+        <div class="photo placeholder">COLOQUE A FOTO<br>da Turbinada do Chefe</div>
+        <div class="content">
+          <div class="name-row"><div class="name">Tá Turbinada do Chefe</div><div class="price">R$ 26,99</div></div>
+          <p class="desc">Costela premium desfiada, cream cheese, queijo, cheiro-verde e pimenta biquinho.</p>
+          <div class="qty"><div class="counter"><button onclick="changeQty('turbinada',-1)">−</button><span id="q-turbinada">1</span><button onclick="changeQty('turbinada',1)">+</button></div><button class="add" onclick="addItem('turbinada')">Adicionar</button></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="photo placeholder">COLOQUE A FOTO<br>do Estrogonofe da Casa</div>
+        <div class="content">
+          <div class="name-row"><div class="name">Estrogonofe da Casa</div><div class="price">R$ 26,99</div></div>
+          <p class="desc">Estrogonofe de frango, catupiry, queijo e cheiro-verde.</p>
+          <div class="qty"><div class="counter"><button onclick="changeQty('strogonoff',-1)">−</button><span id="q-strogonoff">1</span><button onclick="changeQty('strogonoff',1)">+</button></div><button class="add" onclick="addItem('strogonoff')">Adicionar</button></div>
+        </div>
+      </article>
+    </section>
+
+    <div class="section-title">Adicionais <span>R$ 5,00 cada</span></div>
+    <section class="addons">
+      <div class="addon-list">
+        <label class="addon"><input type="checkbox" value="Calabresa"> Calabresa</label>
+        <label class="addon"><input type="checkbox" value="Catupiry"> Catupiry</label>
+        <label class="addon"><input type="checkbox" value="Cheddar"> Cheddar</label>
+        <label class="addon"><input type="checkbox" value="Bacon"> Bacon</label>
+        <label class="addon"><input type="checkbox" value="Queijo"> Queijo</label>
+        <label class="addon"><input type="checkbox" value="Presunto"> Presunto</label>
+      </div>
+      <div class="small-note">Os adicionais selecionados entram no próximo item adicionado ao pedido.</div>
+    </section>
+
+    <section class="checkout" id="pedido">
+      <div class="checkout-top">
+        <h2>🛒 Seu pedido</h2>
+        <div class="total" id="total">R$ 0,00</div>
+      </div>
+      <div class="cart-items" id="cart-items">Seu carrinho está vazio.</div>
+      <div class="form">
+        <input id="nome" placeholder="Seu nome">
+        <input id="endereco" placeholder="Endereço / retirada">
+        <textarea id="obs" placeholder="Observações do pedido"></textarea>
+      </div>
+      <button class="whatsapp" onclick="sendWhatsApp()">Enviar pedido pelo WhatsApp</button>
+    </section>
+  </main>
+
+  <footer>
+    Q Batatas • Batatas recheadas<br>
+    <span id="instagram">@q_batatasdelivery</span>
+  </footer>
+
+<script>
+  // ============================
+  // CONFIGURAÇÃO FÁCIL
+  // ============================
+  const WHATSAPP = "55179976047541"; // WhatsApp da loja
+  const INSTAGRAM = "@q_batatasdelivery";
+
+  const products = {
+    italiana:   {name:"A Italiana (Pizza)", price:24.99},
+    caipira:    {name:"A Caipira Gourmet", price:24.99},
+    dupla:      {name:"Dupla Dinâmica (Cala Bacon)", price:24.99},
+    turbinada:  {name:"Tá Turbinada do Chefe", price:26.99},
+    strogonoff: {name:"Estrogonofe da Casa", price:26.99}
+  };
+
+  const qty = {italiana:1, caipira:1, dupla:1, turbinada:1, strogonoff:1};
+  const cart = [];
+
+  function money(v){
+    return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+  }
+
+  function changeQty(id, delta){
+    qty[id] = Math.max(1, qty[id] + delta);
+    document.getElementById("q-"+id).textContent = qty[id];
+  }
+
+  function selectedAddons(){
+    return [...document.querySelectorAll('.addon input:checked')].map(x=>x.value);
+  }
+
+  function addItem(id){
+    const addons = selectedAddons();
+    const item = {
+      id,
+      name: products[id].name,
+      price: products[id].price,
+      qty: qty[id],
+      addons
+    };
+    cart.push(item);
+
+    // limpa os adicionais para evitar que sejam repetidos sem querer
+    document.querySelectorAll('.addon input').forEach(x=>x.checked=false);
+    renderCart();
+    document.getElementById("pedido").scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
+  function renderCart(){
+    const box = document.getElementById("cart-items");
+    if(!cart.length){
+      box.textContent = "Seu carrinho está vazio.";
+      document.getElementById("total").textContent = money(0);
+      return;
+    }
+
+    let total = 0;
+    box.innerHTML = cart.map((item,i)=>{
+      const addonValue = item.addons.length * 5;
+      const line = (item.price + addonValue) * item.qty;
+      total += line;
+      const extras = item.addons.length ? ` + ${item.addons.join(", ")}` : "";
+      return `<div class="cart-line"><span>${item.qty}x ${item.name}${extras}</span><strong>${money(line)}</strong></div>`;
+    }).join("");
+
+    document.getElementById("total").textContent = money(total);
+  }
+
+  function sendWhatsApp(){
+    if(!cart.length){
+      alert("Adicione pelo menos uma batata ao pedido.");
+      return;
+    }
+
+    const nome = document.getElementById("nome").value.trim();
+    const endereco = document.getElementById("endereco").value.trim();
+    const obs = document.getElementById("obs").value.trim();
+
+    let total = 0;
+    const lines = cart.map(item=>{
+      const line = (item.price + item.addons.length*5) * item.qty;
+      total += line;
+      const extras = item.addons.length ? ` | Adicionais: ${item.addons.join(", ")}` : "";
+      return `• ${item.qty}x ${item.name}${extras} — ${money(line)}`;
+    });
+
+    const message =
+`🍟 *NOVO PEDIDO — Q BATATAS*
+
+${lines.join("\n")}
+
+💰 *Total: ${money(total)}*
+
+👤 Nome: ${nome || "Não informado"}
+📍 Endereço/retirada: ${endereco || "Não informado"}
+📝 Observações: ${obs || "Nenhuma"}
+
+Pedido enviado pelo site ${INSTAGRAM}`;
+
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`, "_blank");
+  }
+
+  document.getElementById("instagram").textContent = INSTAGRAM;
+</script>
+</body>
+</html>
